@@ -8,47 +8,46 @@ namespace Kalc
 {
     class Program
     {
-        static double[] dataCollector = new double[] { };
-        static int? ISMyDataNull;
+        static List<double> dataCollector = new List<double> () ;
+        static int? iSMyDataNull;
 
         public static void Main(string[] args)
         {
-            // Welcome to Kalc
+            // Welcome to Kalc.
             Console.WriteLine("Hello, Welcome to Kalc");
 
-            //Getting mode of operation 
-            String SelectedOperation;
-            bool SelectionChecker;
-            int MySelection;
+            //Getting mode of operation. 
+            string selectedOperation;
+            bool selectionChecker;
+            int mySelection;
             do
             {
                 Console.WriteLine("Please Select an operation:");
                 Console.WriteLine(" 1. Addition \n 2. Subtraction \n 3. Multiplication \n 4. Division");
-                SelectedOperation = Console.ReadLine();
+                selectedOperation = Console.ReadLine();
+                // Getting the correct input 
+                selectionChecker = int.TryParse(selectedOperation, out mySelection);
+                if (!selectionChecker) Console.WriteLine("Invalid input! Please put the correct input") ;
+                if (mySelection > 4 || mySelection < 0) Console.WriteLine("Input is out of range");
                 
-                SelectionChecker = int.TryParse(SelectedOperation, out MySelection);
-                if (!SelectionChecker) Console.WriteLine("Invalid input! Please put the correct input") ;
-                if (MySelection > 4 || MySelection < 0) Console.WriteLine("Input is out of range");
-                
-            } while (SelectionChecker == false || MySelection > 4 || MySelection < 0);
+            } while ((selectionChecker == false) || (mySelection) > 4 || (mySelection < 0));
 
-            // Assigning MySelection to its various methods
-            switch (MySelection)
+            // Assigning MySelection to its various methods.
+            switch (mySelection)
             {
-                case 1: //ToDO Addition
-                    
+                case 1: //ToDO Addition...
                     Adding();
                     break;
 
-                case 2: //ToDO Subtration
+                case 2: //ToDO Subtration...
                     Subtracting();
                     break;
 
-                case 3: //ToDO Multiplication
+                case 3: //ToDO Multiplication...
                     Mutiplying();
                     break;
 
-                case 4: //ToDO Division
+                case 4: //ToDO Division...
                     Dividing();
                     break;
             }
@@ -62,7 +61,7 @@ namespace Kalc
             string myData;
             bool myDataChecker;
             double myDataStringToDouble ;
-                //myData must be an integer not a string
+                //The myData must be an integer not a string.
             do
             {
                 Console.WriteLine("\n Enter the next number" +
@@ -76,7 +75,7 @@ namespace Kalc
 
                 if (myData == "")
                 {
-                    ISMyDataNull = null;
+                    iSMyDataNull = null;
                     myDataStringToDouble = 0;
                     break;
                 }
@@ -87,7 +86,7 @@ namespace Kalc
                 }    
                 else
                 {
-                   ISMyDataNull = (int)double.Parse(myData);
+                   iSMyDataNull = (int)double.Parse(myData);
                     Console.WriteLine("Data entered!");
                         
                     break;
@@ -101,7 +100,7 @@ namespace Kalc
             string myData;
             bool myDataChecker;
             double myDataStringToDouble;
-            //myData must be an integer not a string
+            //myData must be an integer not a string.
             do
             {
                 Console.WriteLine("\n Enter the next number" +
@@ -109,13 +108,11 @@ namespace Kalc
                 myData = Console.ReadLine();
 
 
-
-
                 myDataChecker = double.TryParse(myData, out myDataStringToDouble);
 
                 if (myData == "")
                 {
-                    ISMyDataNull = null;
+                    iSMyDataNull = null;
                     myDataStringToDouble = 1;
                     break;
                 }
@@ -126,7 +123,7 @@ namespace Kalc
                 }
                 else
                 {
-                    ISMyDataNull = (int)(double.Parse(myData));
+                    iSMyDataNull = (int)(double.Parse(myData));
                     Console.WriteLine("Data entered!");
 
                     break;
@@ -134,7 +131,7 @@ namespace Kalc
             } while (myDataChecker == false);
             return myDataStringToDouble;
         }
-        //Checking data to make it useful
+        //Checking data to make it useful.
         static bool DataChecker(string getData, out double MyDataStringToDouble)
         {
             double myDataStringToDouble;
@@ -149,17 +146,18 @@ namespace Kalc
             }
             else
             {
-                ISMyDataNull = (int)(double.Parse(getData));
+                iSMyDataNull = (int)(double.Parse(getData));
                 Console.WriteLine("Data entered!");
                 MyDataStringToDouble = myDataStringToDouble;
                 return true;
             } 
         }
 
-        //TODO adding here
+        //TO DO adding here...
         private static void Adding()
         {
             Console.Clear();
+            #region
             Console.WriteLine("Enter a number to start the addition operation");
             string FirstNumber = Console.ReadLine();
             double firstNumber;
@@ -180,20 +178,35 @@ namespace Kalc
                 DataChecker(SecondNumber, out secondNumber);
             }
             double SumResult = firstNumber + secondNumber;
-            int i = 0;
             
-            //Collecting data as long as there is data
+            
+            //Collecting data as long as there is data.
             do
             {
+                   
                 Console.Write("  The current sum is {0}", SumResult);
+                 
                 double data = GetData();
                 SumResult += data;
-               // dataCollector[i] = data;
-                i++; 
-            } while (ISMyDataNull != null);
-            Console.WriteLine("The result is {0}", SumResult);
+                dataCollector.Add(data);
+                //Removing the last element.
+                if (iSMyDataNull == null)
+                {
+                    dataCollector.RemoveAt(dataCollector.Count - 1);
+                }
+            } while (iSMyDataNull != null);
+
+            // The result.
+            Console.Write(firstNumber + " + " + secondNumber);
+            foreach(double storedData in dataCollector)
+            {
+                Console.Write($" + {storedData}");
+            }
+            Console.WriteLine("\nThe result is {0}", SumResult);
+            #endregion
         }
 
+        //TO DO subtraction...
         private static void Subtracting()
         {
             Console.Clear();
@@ -219,21 +232,30 @@ namespace Kalc
                 DataChecker(SecondNumber, out secondNumber);
             }
             double SubResult = firstNumber - secondNumber;
-            int i = 0;
-
-            //Collecting data as long as there is data
+            //Collecting data as long as there is data.
             do
             {
                 Console.Write("  The current result is {0}", SubResult);
                 double data = GetData();
                 SubResult -= data;
-                // dataCollector[i] = data;
-                i++;
-            } while (ISMyDataNull != null);
-            Console.WriteLine("The result is {0}", SubResult);
+                dataCollector.Add(data);
+                //Removing the last element.
+                if (iSMyDataNull == null)
+                {
+                    dataCollector.RemoveAt(dataCollector.Count - 1);
+                }
+            } while (iSMyDataNull != null);
+            // The result.
+            Console.Write(firstNumber + " - " + secondNumber);
+            foreach (double storedData in dataCollector)
+            {
+                Console.Write($" - {storedData}");
+            }
+            Console.WriteLine("\nThe result is {0}", SubResult);
             #endregion
         }
 
+        //To Do Multiplication...
         private static void Mutiplying()
         {
             Console.Clear();
@@ -260,25 +282,33 @@ namespace Kalc
                 DataChecker(SecondNumber, out secondNumber);
             }
             double TimesResult = firstNumber * secondNumber;
-            //int i = 0;
-
-            //Collecting data as long as there is data
+            //Collecting data as long as there is data.
             do
             {
                 Console.Write("  The current result is {0}", TimesResult);
                 double data = GetData1();
                 TimesResult *= data;
-                // dataCollector[i] = data;
-               // i++;
-            } while (ISMyDataNull != null);
-            Console.WriteLine("The result is {0}", TimesResult);
+                dataCollector.Add(data);
+                //Removing the last element.
+                if (iSMyDataNull == null)
+                {
+                    dataCollector.RemoveAt(dataCollector.Count - 1);
+                }
+            } while (iSMyDataNull != null);
+            // The result.
+            Console.Write(firstNumber + " * " + secondNumber);
+            foreach (double storedData in dataCollector)
+            {
+                Console.Write($" * {storedData}");
+            }
+            Console.WriteLine("\nThe result is {0}", TimesResult);
             #endregion
         }
 
+        //To Do Division...
         private static void Dividing()
         {
             Console.Clear();
-            
             #region
             Console.Clear();
             Console.WriteLine("Enter a number to start the dividing operation");
@@ -301,18 +331,26 @@ namespace Kalc
                 DataChecker(SecondNumber, out secondNumber);
             }
             double Quotient = firstNumber / secondNumber;
-            int i = 0;
-
             //Collecting data as long as there is data
             do
             {
                 Console.Write("  The current result is {0}", Quotient);
                 double data = GetData1();
                 Quotient /= data;
-                // dataCollector[i] = data;
-                i++;
-            } while (ISMyDataNull != null);
-            Console.WriteLine("The result is {0}", Quotient);
+                dataCollector.Add(data);
+                //Removing the last element.
+                if (iSMyDataNull == null)
+                {
+                    dataCollector.RemoveAt(index:dataCollector.Count - 1);
+                }
+            } while (iSMyDataNull != null);
+            // The result.
+            Console.Write(firstNumber + " / " + secondNumber);
+            foreach (double storedData in dataCollector)
+            {
+                Console.Write($" / {storedData}");
+            }
+            Console.WriteLine("\nThe result is {0}", Quotient);
             #endregion
         }
     }
