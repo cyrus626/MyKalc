@@ -28,7 +28,7 @@ namespace Kalc
                 // Getting the correct input 
                 selectionChecker = int.TryParse(selectedOperation, out mySelection);
                 if (!selectionChecker) Console.WriteLine("Invalid input! Please put the correct input") ;
-                if (mySelection > 4 || mySelection < 0) Console.WriteLine("Input is out of range");
+                if ((mySelection > 4) || (mySelection < 0)) Console.WriteLine("Input is out of range");
                 
             } while ((selectionChecker == false) || (mySelection) > 4 || (mySelection < 0));
 
@@ -65,32 +65,15 @@ namespace Kalc
             do
             {
                 Console.WriteLine("\n Enter the next number" +
-                        "to continue operation or\n press enter to exit");
+                        "to continue operation or\nPress enter to exit");
                 myData = Console.ReadLine();
-                
-
-
-
-                myDataChecker = double.TryParse(myData, out myDataStringToDouble);
-
                 if (myData == "")
                 {
                     iSMyDataNull = null;
                     myDataStringToDouble = 0;
                     break;
                 }
-                
-                if (myDataChecker == false)
-                {
-                    Console.WriteLine("Please enter a valid number");
-                }    
-                else
-                {
-                   iSMyDataNull = (int)double.Parse(myData);
-                    Console.WriteLine("Data entered!");
-                        
-                    break;
-                }
+                myDataChecker = DataChecker(myData, out myDataStringToDouble);
             } while (myDataChecker == false);
             return myDataStringToDouble;
         }
@@ -104,11 +87,8 @@ namespace Kalc
             do
             {
                 Console.WriteLine("\n Enter the next number" +
-                        "to continue operation or\n press enter to exit");
+                        "to continue operation or\nPress enter to exit");
                 myData = Console.ReadLine();
-
-
-                myDataChecker = double.TryParse(myData, out myDataStringToDouble);
 
                 if (myData == "")
                 {
@@ -116,18 +96,7 @@ namespace Kalc
                     myDataStringToDouble = 1;
                     break;
                 }
-
-                if (myDataChecker == false)
-                {
-                    Console.WriteLine("Please enter a valid number");
-                }
-                else
-                {
-                    iSMyDataNull = (int)(double.Parse(myData));
-                    Console.WriteLine("Data entered!");
-
-                    break;
-                }
+                myDataChecker = DataChecker(myData, out myDataStringToDouble);
             } while (myDataChecker == false);
             return myDataStringToDouble;
         }
@@ -151,6 +120,29 @@ namespace Kalc
                 MyDataStringToDouble = myDataStringToDouble;
                 return true;
             } 
+        }
+
+        private static Tuple<double, double> ReadUserInput()
+        {
+            string myData;
+            bool myDataChecker;
+            double myDataStringToDouble;
+            //myData must be an integer not a string.
+            do
+            {
+                Console.WriteLine("\n Enter the next number" +
+                        "to continue operation or\nPress enter to exit");
+                myData = Console.ReadLine();
+
+                if (myData == "")
+                {
+                    iSMyDataNull = null;
+                    myDataStringToDouble = 1;
+                    break;
+                }
+                myDataChecker = DataChecker(myData, out myDataStringToDouble);
+            } while (myDataChecker == false);
+            return ( myDataStringToDouble, );
         }
 
         //TO DO adding here...
@@ -178,7 +170,6 @@ namespace Kalc
                 DataChecker(SecondNumber, out secondNumber);
             }
             double SumResult = firstNumber + secondNumber;
-            
             
             //Collecting data as long as there is data.
             do
@@ -304,7 +295,6 @@ namespace Kalc
             Console.WriteLine("\nThe result is {0}", TimesResult);
             #endregion
         }
-
         //To Do Division...
         private static void Dividing()
         {
