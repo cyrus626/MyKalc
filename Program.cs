@@ -10,7 +10,8 @@ namespace Kalc
     {
         static List<double> dataCollector = new List<double> () ;
         static int? iSMyDataNull;
-
+        static double T1;
+        static double T2;
         public static void Main(string[] args)
         {
             // Welcome to Kalc.
@@ -55,13 +56,13 @@ namespace Kalc
 
             Console.ReadKey();
         }
-
-        private static double GetData()
+        
+        private static (double, double) GetData()
         {
             string myData;
             bool myDataChecker;
-            double myDataStringToDouble ;
-                //The myData must be an integer not a string.
+            
+            //The myData must be an integer not a string.
             do
             {
                 Console.WriteLine("\n Enter the next number" +
@@ -70,36 +71,15 @@ namespace Kalc
                 if (myData == "")
                 {
                     iSMyDataNull = null;
-                    myDataStringToDouble = 0;
+                    T1 = 0;
+                    T2 = 1;
                     break;
                 }
-                myDataChecker = DataChecker(myData, out myDataStringToDouble);
+                myDataChecker = DataChecker(myData, out T1);
             } while (myDataChecker == false);
-            return myDataStringToDouble;
+            return (T1, T2);
         }
 
-        private static double GetData1()
-        {
-            string myData;
-            bool myDataChecker;
-            double myDataStringToDouble;
-            //myData must be an integer not a string.
-            do
-            {
-                Console.WriteLine("\n Enter the next number" +
-                        "to continue operation or\nPress enter to exit");
-                myData = Console.ReadLine();
-
-                if (myData == "")
-                {
-                    iSMyDataNull = null;
-                    myDataStringToDouble = 1;
-                    break;
-                }
-                myDataChecker = DataChecker(myData, out myDataStringToDouble);
-            } while (myDataChecker == false);
-            return myDataStringToDouble;
-        }
         //Checking data to make it useful.
         static bool DataChecker(string getData, out double MyDataStringToDouble)
         {
@@ -120,29 +100,6 @@ namespace Kalc
                 MyDataStringToDouble = myDataStringToDouble;
                 return true;
             } 
-        }
-
-        private static Tuple<double, double> ReadUserInput()
-        {
-            string myData;
-            bool myDataChecker;
-            double myDataStringToDouble;
-            //myData must be an integer not a string.
-            do
-            {
-                Console.WriteLine("\n Enter the next number" +
-                        "to continue operation or\nPress enter to exit");
-                myData = Console.ReadLine();
-
-                if (myData == "")
-                {
-                    iSMyDataNull = null;
-                    myDataStringToDouble = 1;
-                    break;
-                }
-                myDataChecker = DataChecker(myData, out myDataStringToDouble);
-            } while (myDataChecker == false);
-            return ( myDataStringToDouble, );
         }
 
         //TO DO adding here...
@@ -176,8 +133,8 @@ namespace Kalc
             {
                    
                 Console.Write("  The current sum is {0}", SumResult);
-                 
-                double data = GetData();
+                GetData(); 
+                double data = T1;
                 SumResult += data;
                 dataCollector.Add(data);
                 //Removing the last element.
@@ -227,7 +184,8 @@ namespace Kalc
             do
             {
                 Console.Write("  The current result is {0}", SubResult);
-                double data = GetData();
+                GetData();
+                double data = T1;
                 SubResult -= data;
                 dataCollector.Add(data);
                 //Removing the last element.
@@ -277,7 +235,8 @@ namespace Kalc
             do
             {
                 Console.Write("  The current result is {0}", TimesResult);
-                double data = GetData1();
+                GetData();
+                double data = T2;
                 TimesResult *= data;
                 dataCollector.Add(data);
                 //Removing the last element.
@@ -325,7 +284,8 @@ namespace Kalc
             do
             {
                 Console.Write("  The current result is {0}", Quotient);
-                double data = GetData1();
+                GetData();
+                double data = T2;
                 Quotient /= data;
                 dataCollector.Add(data);
                 //Removing the last element.
