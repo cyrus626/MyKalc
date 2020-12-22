@@ -155,13 +155,6 @@ namespace Kalc
                         result += data; 
                     }
                     while (getNullData != null);
-                    // The result.
-                    Console.Write("\nDone! --> " + firstNumber + " + " + secondNumber);
-                    foreach (double storedData in dataCollector)
-                    {
-                        Console.Write($" + {storedData}");
-                    }
-                    Console.Write(" = " + result);
                     break;
                 #endregion
 
@@ -183,13 +176,6 @@ namespace Kalc
                         result -= data;
                     }
                     while (getNullData != null);
-                    // The result.
-                    Console.Write("\nDone! --> " + firstNumber + " - " + secondNumber);
-                    foreach (double storedData in dataCollector)
-                    {
-                        Console.Write($" - {storedData}");
-                    }
-                    Console.Write(" = " + result);
                     break;
                 #endregion
 
@@ -211,13 +197,6 @@ namespace Kalc
                         result *= data;
                     }
                     while (getNullData != null);
-                    // The result.
-                    Console.Write("\nDone! --> " + firstNumber + " * " + secondNumber);
-                    foreach (double storedData in dataCollector)
-                    {
-                        Console.Write($" * {storedData}");
-                    }
-                    Console.Write(" = " + result);
                     break;
                 #endregion
 
@@ -239,17 +218,17 @@ namespace Kalc
                         result /= data;
                     }
                     while (getNullData != null);
-                    // The result.
-                    Console.Write("\nDone! --> " + firstNumber + " / " + secondNumber);
-                    foreach (double storedData in dataCollector)
-                    {
-                        Console.Write($" / {storedData}");
-                    }
-                    Console.Write(" = " + result);
                     break;
                     #endregion
             }
             #endregion
+            // The result.
+            Console.Write("\nDone! --> {0} {1} {2}", firstNumber, sign, secondNumber);
+            foreach (double storedData in dataCollector)
+            {
+                Console.Write($" {sign} {storedData}");
+            }
+            Console.Write(" = " + result);
         }
     }
 }
