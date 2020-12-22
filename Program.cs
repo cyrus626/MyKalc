@@ -8,10 +8,9 @@ namespace Kalc
 {
     class Program
     {
-        static List<double> dataCollector = new List<double> () ;
-        static int? iSMyDataNull;
-        static double T1;
-        static double T2;
+        static readonly List<double> dataCollector = new List<double>() ;
+        static double result;
+        static int? getNullData;
         public static void Main(string[] args)
         {
             // Welcome to Kalc.
@@ -21,35 +20,51 @@ namespace Kalc
             string selectedOperation;
             bool selectionChecker;
             int mySelection;
+            string name;
+            //the default operation is +
+            char sign = '+';
+            Console.WriteLine("Please Select an option:");
+            Console.WriteLine("1. Addition \n2. Subtraction \n3. Multiplication \n4. Division");
+
             do
             {
-                Console.WriteLine("Please Select an operation:");
-                Console.WriteLine(" 1. Addition \n 2. Subtraction \n 3. Multiplication \n 4. Division");
+                
+                Console.Write("\nEnter in a number to select an option> ");
                 selectedOperation = Console.ReadLine();
                 // Getting the correct input 
                 selectionChecker = int.TryParse(selectedOperation, out mySelection);
-                if (!selectionChecker) Console.WriteLine("Invalid input! Please put the correct input") ;
-                if ((mySelection > 4) || (mySelection < 0)) Console.WriteLine("Input is out of range");
-                
+                if ((!selectionChecker) || (mySelection > 4) || (mySelection < 0)) 
+                {
+                    Console.WriteLine("Invalid Output! Please try again"); 
+                }
+ 
             } while ((selectionChecker == false) || (mySelection) > 4 || (mySelection < 0));
 
             // Assigning MySelection to its various methods.
             switch (mySelection)
             {
                 case 1: //ToDO Addition...
-                    Adding();
+                    name = "addition";
+                    sign = '+';
+                    DoOperation(name, sign);
                     break;
 
                 case 2: //ToDO Subtration...
-                    Subtracting();
+                    name = "subtraction";
+                    sign = '-';
+                    DoOperation(name, sign);
                     break;
 
                 case 3: //ToDO Multiplication...
-                    Mutiplying();
+                    name = "multiplication";
+                    sign = '*';
+                    DoOperation(name, sign);
                     break;
 
                 case 4: //ToDO Division...
-                    Dividing();
+                    name = "division";
+                    sign = '/';
+                    DoOperation(name, sign);
                     break;
             }
 
@@ -57,27 +72,28 @@ namespace Kalc
             Console.ReadKey();
         }
         
-        private static (double, double) GetData()
+        private static double GetData()
         {
             string myData;
             bool myDataChecker;
-            
+            double output;
             //The myData must be an integer not a string.
             do
             {
-                Console.WriteLine("\n Enter the next number" +
-                        "to continue operation or\nPress enter to exit");
+                Console.Write("\nPlease enter another number" +
+                        "to continue operation or leave empty to exit (Ans: {0})> ", result);
                 myData = Console.ReadLine();
+
+                //Transfer null data here
                 if (myData == "")
                 {
-                    iSMyDataNull = null;
-                    T1 = 0;
-                    T2 = 1;
+                    getNullData = null;
+                    output = 0;
                     break;
                 }
-                myDataChecker = DataChecker(myData, out T1);
+                myDataChecker = DataChecker(myData, out output);
             } while (myDataChecker == false);
-            return (T1, T2);
+            return output;
         }
 
         //Checking data to make it useful.
@@ -95,212 +111,144 @@ namespace Kalc
             }
             else
             {
-                iSMyDataNull = (int)(double.Parse(getData));
-                Console.WriteLine("Data entered!");
+                getNullData = (int)(double.Parse(getData));
                 MyDataStringToDouble = myDataStringToDouble;
                 return true;
             } 
         }
-
-        //TO DO adding here...
-        private static void Adding()
+        private static void DoOperation(string name, char sign)
         {
-            Console.Clear();
             #region
-            Console.WriteLine("Enter a number to start the addition operation");
-            string FirstNumber = Console.ReadLine();
+            string firstNumberString;
             double firstNumber;
-            while(DataChecker(FirstNumber,out firstNumber) == false)
-            {
-                Console.WriteLine("Enter a number to start the addition operation");
-                FirstNumber = Console.ReadLine();
-                DataChecker(FirstNumber, out firstNumber);
-            }
-            
-            Console.WriteLine("Enter another number");
-            string SecondNumber = Console.ReadLine();
-            double secondNumber;
-            while (DataChecker(SecondNumber, out secondNumber) == false)
-            {
-                Console.WriteLine("Enter a number to start the addition operation");
-                SecondNumber = Console.ReadLine();
-                DataChecker(SecondNumber, out secondNumber);
-            }
-            double SumResult = firstNumber + secondNumber;
-            
-            //Collecting data as long as there is data.
             do
             {
-                   
-                Console.Write("  The current sum is {0}", SumResult);
-                GetData(); 
-                double data = T1;
-                SumResult += data;
-                dataCollector.Add(data);
-                //Removing the last element.
-                if (iSMyDataNull == null)
-                {
-                    dataCollector.RemoveAt(dataCollector.Count - 1);
-                }
-            } while (iSMyDataNull != null);
-
-            // The result.
-            Console.Write(firstNumber + " + " + secondNumber);
-            foreach(double storedData in dataCollector)
-            {
-                Console.Write($" + {storedData}");
+                Console.Write("\nEnter a number to start the {0}> ", name);
+                firstNumberString = Console.ReadLine();
+                
             }
-            Console.WriteLine("\nThe result is {0}", SumResult);
-            #endregion
-        }
-
-        //TO DO subtraction...
-        private static void Subtracting()
-        {
-            Console.Clear();
-            #region
-            Console.Clear();
-            Console.WriteLine("Enter a number to start the subtraction operation");
-            string FirstNumber = Console.ReadLine();
-            double firstNumber;
-            while (DataChecker(FirstNumber, out firstNumber) == false)
-            {
-                Console.WriteLine("Enter a number to start the subtraction operation");
-                FirstNumber = Console.ReadLine();
-                DataChecker(FirstNumber, out firstNumber);
-            }
-
-            Console.WriteLine("Enter another number");
-            string SecondNumber = Console.ReadLine();
+            while (DataChecker(firstNumberString, out firstNumber) == false);
+            string secondNumberString;
             double secondNumber;
-            while (DataChecker(SecondNumber, out secondNumber) == false)
-            {
-                Console.WriteLine("Enter another number");
-                SecondNumber = Console.ReadLine();
-                DataChecker(SecondNumber, out secondNumber);
-            }
-            double SubResult = firstNumber - secondNumber;
-            //Collecting data as long as there is data.
             do
             {
-                Console.Write("  The current result is {0}", SubResult);
-                GetData();
-                double data = T1;
-                SubResult -= data;
-                dataCollector.Add(data);
-                //Removing the last element.
-                if (iSMyDataNull == null)
-                {
-                    dataCollector.RemoveAt(dataCollector.Count - 1);
-                }
-            } while (iSMyDataNull != null);
-            // The result.
-            Console.Write(firstNumber + " - " + secondNumber);
-            foreach (double storedData in dataCollector)
-            {
-                Console.Write($" - {storedData}");
+                Console.Write("Please enter another number> ");
+                secondNumberString = Console.ReadLine();
             }
-            Console.WriteLine("\nThe result is {0}", SubResult);
-            #endregion
-        }
+            while (DataChecker(secondNumberString, out secondNumber) == false);
+            switch (sign)
+            {
+                #region
+                //To do addition continues here.
+                case '+':
+                    result = firstNumber + secondNumber;
+                    //Collecting data as long as there is data.
+                    do
+                    {
+                        double data = GetData();
+                        dataCollector.Add(data);
+                        //Removing the last element.
+                        if (getNullData == null)
+                        {
+                            dataCollector.RemoveAt(dataCollector.Count - 1);
+                        }
+                        result += data; 
+                    }
+                    while (getNullData != null);
+                    // The result.
+                    Console.Write("\nDone! --> " + firstNumber + " + " + secondNumber);
+                    foreach (double storedData in dataCollector)
+                    {
+                        Console.Write($" + {storedData}");
+                    }
+                    Console.Write(" = " + result);
+                    break;
+                #endregion
 
-        //To Do Multiplication...
-        private static void Mutiplying()
-        {
-            Console.Clear();
-            
-            #region
-            Console.Clear();
-            Console.WriteLine("Enter a number to start the multiplication operation");
-            string FirstNumber = Console.ReadLine();
-            double firstNumber;
-            while (DataChecker(FirstNumber, out firstNumber) == false)
-            {
-                Console.WriteLine("Enter a number to start the multiplication operation");
-                FirstNumber = Console.ReadLine();
-                DataChecker(FirstNumber, out firstNumber);
-            }
+                #region
+                //TO DO subtraction.
+                case '-':
+                    result = firstNumber - secondNumber;
+                    //Collecting data as long as there is data.
+                    do
+                    {
+                        double data = GetData();
+                        dataCollector.Add(data);
+                        //Removing the last element.
+                        if (getNullData == null)
+                        {
+                            dataCollector.RemoveAt(dataCollector.Count - 1);
+                            break;
+                        }
+                        result -= data;
+                    }
+                    while (getNullData != null);
+                    // The result.
+                    Console.Write("\nDone! --> " + firstNumber + " - " + secondNumber);
+                    foreach (double storedData in dataCollector)
+                    {
+                        Console.Write($" - {storedData}");
+                    }
+                    Console.Write(" = " + result);
+                    break;
+                #endregion
 
-            Console.WriteLine("Enter another number");
-            string SecondNumber = Console.ReadLine();
-            double secondNumber;
-            while (DataChecker(SecondNumber, out secondNumber) == false)
-            {
-                Console.WriteLine("Enter another number");
-                SecondNumber = Console.ReadLine();
-                DataChecker(SecondNumber, out secondNumber);
-            }
-            double TimesResult = firstNumber * secondNumber;
-            //Collecting data as long as there is data.
-            do
-            {
-                Console.Write("  The current result is {0}", TimesResult);
-                GetData();
-                double data = T2;
-                TimesResult *= data;
-                dataCollector.Add(data);
-                //Removing the last element.
-                if (iSMyDataNull == null)
-                {
-                    dataCollector.RemoveAt(dataCollector.Count - 1);
-                }
-            } while (iSMyDataNull != null);
-            // The result.
-            Console.Write(firstNumber + " * " + secondNumber);
-            foreach (double storedData in dataCollector)
-            {
-                Console.Write($" * {storedData}");
-            }
-            Console.WriteLine("\nThe result is {0}", TimesResult);
-            #endregion
-        }
-        //To Do Division...
-        private static void Dividing()
-        {
-            Console.Clear();
-            #region
-            Console.Clear();
-            Console.WriteLine("Enter a number to start the dividing operation");
-            string FirstNumber = Console.ReadLine();
-            double firstNumber;
-            while (DataChecker(FirstNumber, out firstNumber) == false)
-            {
-                Console.WriteLine("Enter a number to start the addition operation");
-                FirstNumber = Console.ReadLine();
-                DataChecker(FirstNumber, out firstNumber);
-            }
+                #region
+                //To Do Multiplication.
+                case '*':
+                    result = firstNumber * secondNumber;
+                    //Collecting data as long as there is data.
+                    do
+                    {
+                        double data = GetData();
+                        dataCollector.Add(data);
+                        //Removing the last element.
+                        if (getNullData == null)
+                        {
+                            dataCollector.RemoveAt(dataCollector.Count - 1);
+                            break;
+                        }
+                        result *= data;
+                    }
+                    while (getNullData != null);
+                    // The result.
+                    Console.Write("\nDone! --> " + firstNumber + " * " + secondNumber);
+                    foreach (double storedData in dataCollector)
+                    {
+                        Console.Write($" * {storedData}");
+                    }
+                    Console.Write(" = " + result);
+                    break;
+                #endregion
 
-            Console.WriteLine("Enter another number");
-            string SecondNumber = Console.ReadLine();
-            double secondNumber;
-            while (DataChecker(SecondNumber, out secondNumber) == false)
-            {
-                Console.WriteLine("Enter a number to start the dividion operation");
-                SecondNumber = Console.ReadLine();
-                DataChecker(SecondNumber, out secondNumber);
+                #region
+                //To Do Division.
+                case '/':
+                    result = firstNumber / secondNumber;
+                    //Collecting data as long as there is data.
+                    do
+                    {
+                        double data = GetData();
+                        dataCollector.Add(data);
+                        //Removing the last element.
+                        if (getNullData == null)
+                        {
+                            dataCollector.RemoveAt(dataCollector.Count - 1);
+                            break;
+                        }
+                        result /= data;
+                    }
+                    while (getNullData != null);
+                    // The result.
+                    Console.Write("\nDone! --> " + firstNumber + " / " + secondNumber);
+                    foreach (double storedData in dataCollector)
+                    {
+                        Console.Write($" / {storedData}");
+                    }
+                    Console.Write(" = " + result);
+                    break;
+                    #endregion
             }
-            double Quotient = firstNumber / secondNumber;
-            //Collecting data as long as there is data
-            do
-            {
-                Console.Write("  The current result is {0}", Quotient);
-                GetData();
-                double data = T2;
-                Quotient /= data;
-                dataCollector.Add(data);
-                //Removing the last element.
-                if (iSMyDataNull == null)
-                {
-                    dataCollector.RemoveAt(index:dataCollector.Count - 1);
-                }
-            } while (iSMyDataNull != null);
-            // The result.
-            Console.Write(firstNumber + " / " + secondNumber);
-            foreach (double storedData in dataCollector)
-            {
-                Console.Write($" / {storedData}");
-            }
-            Console.WriteLine("\nThe result is {0}", Quotient);
             #endregion
         }
     }
