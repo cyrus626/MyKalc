@@ -11,7 +11,11 @@ namespace Kalc
         static readonly List<double> dataCollector = new List<double>() ;
         static double result;
         static int? getNullData;
-        public static void Main(string[] args)
+        static double firstNumber;
+        static readonly List<char> signCollector = new List<char>();
+        static char sign;
+        static string name;
+        public static void Main()
         {
             // Welcome to Kalc.
             Console.WriteLine("Hello, Welcome to Kalc");
@@ -20,55 +24,79 @@ namespace Kalc
             string selectedOperation;
             bool selectionChecker;
             int mySelection;
-            string name;
-            //the default operation is +
-            char sign = '+';
-            Console.WriteLine("Please Select an option:");
-            Console.WriteLine("1. Addition \n2. Subtraction \n3. Multiplication \n4. Division");
-
+            
+            
+            string firstNumberString;
             do
             {
-                
-                Console.Write("\nEnter in a number to select an option> ");
-                selectedOperation = Console.ReadLine();
-                // Getting the correct input 
-                selectionChecker = int.TryParse(selectedOperation, out mySelection);
-                if ((!selectionChecker) || (mySelection > 4) || (mySelection < 0)) 
-                {
-                    Console.WriteLine("Invalid Output! Please try again"); 
-                }
- 
-            } while ((selectionChecker == false) || (mySelection) > 4 || (mySelection < 0));
+                Console.Write("\nEnter a number> ");
+                firstNumberString = Console.ReadLine();
 
-            // Assigning MySelection to its various methods.
-            switch (mySelection)
-            {
-                case 1: //ToDO Addition...
-                    name = "addition";
-                    sign = '+';
-                    DoOperation(name, sign);
-                    break;
-
-                case 2: //ToDO Subtration...
-                    name = "subtraction";
-                    sign = '-';
-                    DoOperation(name, sign);
-                    break;
-
-                case 3: //ToDO Multiplication...
-                    name = "multiplication";
-                    sign = '*';
-                    DoOperation(name, sign);
-                    break;
-
-                case 4: //ToDO Division...
-                    name = "division";
-                    sign = '/';
-                    DoOperation(name, sign);
-                    break;
             }
+            while (DataChecker(firstNumberString, out firstNumber) == false);
 
+            result = firstNumber;
+            Console.WriteLine("Please Select an option:");
+            do {
+                Console.WriteLine("1. Addition \n2. Subtraction \n3. Multiplication \n4. Division");
 
+                do
+                {
+
+                    Console.Write("\nEnter in a number to select an option> ");
+                    selectedOperation = Console.ReadLine();
+                    // Getting the correct input 
+                    selectionChecker = int.TryParse(selectedOperation, out mySelection);
+                    if ((!selectionChecker) || (mySelection > 4) || (mySelection < 0))
+                    {
+                        Console.WriteLine("Invalid Output! Please try again");
+                    }
+
+                } while ((selectionChecker == false) || (mySelection) > 4 || (mySelection < 0));
+
+                // Assigning MySelection to its various methods.
+                switch (mySelection)
+                {
+                    case 1: //ToDO Addition...
+                        name = "add";
+                        sign = '+';
+                        DoOperation(name, sign);
+                        break;
+
+                    case 2: //ToDO Subtration...
+                        name = "subtract";
+                        sign = '-';
+                        DoOperation(name, sign);
+                        break;
+
+                    case 3: //ToDO Multiplication...
+                        name = "multiply";
+                        sign = '*';
+                        DoOperation(name, sign);
+                        break;
+
+                    case 4: //ToDO Division...
+                        name = "divide";
+                        sign = '/';
+                        DoOperation(name, sign);
+                        break;
+                }
+
+            } while (getNullData != null);
+
+            //The result.
+            int i = 0;
+            Console.Write("\nDone! --> {0} ", firstNumber, sign);
+            foreach (double storedData in dataCollector)
+            {
+                while (i < signCollector.Count)
+                {
+                    Console.Write($" {signCollector[i]} {storedData}");
+                    i++;
+                    break;
+                }
+            }
+            Console.Write(" = " + result);
             Console.ReadKey();
         }
         
@@ -80,8 +108,8 @@ namespace Kalc
             //The myData must be an integer not a string.
             do
             {
-                Console.Write("\nPlease enter another number" +
-                        "to continue operation or leave empty to exit (Ans: {0})> ", result);
+                Console.Write("\nPlease {1} number to  " +
+                        "to continue operation or leave empty to exit (Ans: {0})> ", result, name);
                 myData = Console.ReadLine();
 
                 //Transfer null data here
@@ -94,13 +122,12 @@ namespace Kalc
                 myDataChecker = DataChecker(myData, out output);
             } while (myDataChecker == false);
             return output;
-        }
+        }  
 
         //Checking data to make it useful.
         static bool DataChecker(string getData, out double MyDataStringToDouble)
         {
-            double myDataStringToDouble;
-            bool myDataChecker = double.TryParse(getData, out myDataStringToDouble);
+            bool myDataChecker = double.TryParse(getData, out double myDataStringToDouble);
 
             if (myDataChecker == false)
             {
@@ -119,116 +146,81 @@ namespace Kalc
         private static void DoOperation(string name, char sign)
         {
             #region
-            string firstNumberString;
-            double firstNumber;
-            do
-            {
-                Console.Write("\nEnter a number to start the {0}> ", name);
-                firstNumberString = Console.ReadLine();
-                
-            }
-            while (DataChecker(firstNumberString, out firstNumber) == false);
-            string secondNumberString;
-            double secondNumber;
-            do
-            {
-                Console.Write("Please enter another number> ");
-                secondNumberString = Console.ReadLine();
-            }
-            while (DataChecker(secondNumberString, out secondNumber) == false);
+            
             switch (sign)
             {
                 #region
                 //To do addition continues here.
                 case '+':
-                    result = firstNumber + secondNumber;
-                    //Collecting data as long as there is data.
-                    do
-                    {
-                        double data = GetData();
-                        dataCollector.Add(data);
+                    double data = GetData();
+                    dataCollector.Add(data);
+                    signCollector.Add(sign);
                         //Removing the last element.
                         if (getNullData == null)
                         {
                             dataCollector.RemoveAt(dataCollector.Count - 1);
+                            break;
                         }
                         result += data; 
-                    }
-                    while (getNullData != null);
+                    
+                    
                     break;
                 #endregion
 
                 #region
                 //TO DO subtraction.
                 case '-':
-                    result = firstNumber - secondNumber;
-                    //Collecting data as long as there is data.
-                    do
-                    {
-                        double data = GetData();
-                        dataCollector.Add(data);
-                        //Removing the last element.
-                        if (getNullData == null)
+                    data = GetData();
+                    dataCollector.Add(data);
+                    signCollector.Add(sign);
+                    //Removing the last element.
+                    if (getNullData == null)
                         {
                             dataCollector.RemoveAt(dataCollector.Count - 1);
                             break;
                         }
                         result -= data;
-                    }
-                    while (getNullData != null);
+                    
                     break;
                 #endregion
 
                 #region
                 //To Do Multiplication.
                 case '*':
-                    result = firstNumber * secondNumber;
-                    //Collecting data as long as there is data.
-                    do
-                    {
-                        double data = GetData();
-                        dataCollector.Add(data);
-                        //Removing the last element.
-                        if (getNullData == null)
+                    data = GetData();
+                    dataCollector.Add(data);
+                    signCollector.Add(sign);
+                    //Removing the last element.
+                    if (getNullData == null)
                         {
                             dataCollector.RemoveAt(dataCollector.Count - 1);
                             break;
                         }
                         result *= data;
-                    }
-                    while (getNullData != null);
+                    
                     break;
                 #endregion
 
                 #region
                 //To Do Division.
                 case '/':
-                    result = firstNumber / secondNumber;
-                    //Collecting data as long as there is data.
-                    do
-                    {
-                        double data = GetData();
-                        dataCollector.Add(data);
-                        //Removing the last element.
-                        if (getNullData == null)
+                    data = GetData();
+                    dataCollector.Add(data);
+                    signCollector.Add(sign);
+                    //Removing the last element.
+                    if (getNullData == null)
                         {
                             dataCollector.RemoveAt(dataCollector.Count - 1);
                             break;
                         }
                         result /= data;
-                    }
-                    while (getNullData != null);
+                    
                     break;
                     #endregion
             }
             #endregion
             // The result.
-            Console.Write("\nDone! --> {0} {1} {2}", firstNumber, sign, secondNumber);
-            foreach (double storedData in dataCollector)
-            {
-                Console.Write($" {sign} {storedData}");
-            }
-            Console.Write(" = " + result);
+            
         }
     }
 }
