@@ -36,14 +36,15 @@ namespace Kalc
             while (DataChecker(firstNumberString, out firstNumber) == false);
 
             result = firstNumber;
-            Console.WriteLine("Please Select an option:");
+            
             do {
-                Console.WriteLine("1. Addition \n2. Subtraction \n3. Multiplication \n4. Division");
+                Console.WriteLine("Please Select an operation you want to use:");
+                Console.WriteLine("\n1. Addition \n2. Subtraction \n3. Multiplication \n4. Division");
 
                 do
                 {
 
-                    Console.Write("\nEnter in a number to select an option> ");
+                    Console.Write("\nEnter in a number to select an operation> ");
                     selectedOperation = Console.ReadLine();
                     // Getting the correct input 
                     selectionChecker = int.TryParse(selectedOperation, out mySelection);
@@ -58,32 +59,32 @@ namespace Kalc
                 switch (mySelection)
                 {
                     case 1: //ToDO Addition...
-                        name = "add";
+                        name = "addition";
                         sign = '+';
                         DoOperation(name, sign);
                         break;
 
                     case 2: //ToDO Subtration...
-                        name = "subtract";
+                        name = "subtraction";
                         sign = '-';
                         DoOperation(name, sign);
                         break;
 
                     case 3: //ToDO Multiplication...
-                        name = "multiply";
+                        name = "multiplication";
                         sign = '*';
                         DoOperation(name, sign);
                         break;
 
                     case 4: //ToDO Division...
-                        name = "divide";
+                        name = "division";
                         sign = '/';
                         DoOperation(name, sign);
                         break;
                 }
 
             } while (getNullData != null);
-
+            #region
             //The result.
             int i = 0;
             Console.Write("\nDone! --> {0} ", firstNumber, sign);
@@ -97,6 +98,7 @@ namespace Kalc
                 }
             }
             Console.Write(" = " + result);
+            #endregion
             Console.ReadKey();
         }
         
@@ -108,8 +110,8 @@ namespace Kalc
             //The myData must be an integer not a string.
             do
             {
-                Console.Write("\nPlease {1} number to  " +
-                        "to continue operation or leave empty to exit (Ans: {0})> ", result, name);
+                Console.Write("\nPlease enter number to  execute" +
+                        " the {1} operation or leave empty to exit (Ans: {0})> ", result, name);
                 myData = Console.ReadLine();
 
                 //Transfer null data here
@@ -143,6 +145,7 @@ namespace Kalc
                 return true;
             } 
         }
+
         private static void DoOperation(string name, char sign)
         {
             #region
@@ -155,15 +158,13 @@ namespace Kalc
                     double data = GetData();
                     dataCollector.Add(data);
                     signCollector.Add(sign);
-                        //Removing the last element.
-                        if (getNullData == null)
-                        {
-                            dataCollector.RemoveAt(dataCollector.Count - 1);
-                            break;
-                        }
-                        result += data; 
-                    
-                    
+                    //Removing the last element.
+                    if (getNullData == null)
+                    {
+                        dataCollector.RemoveAt(dataCollector.Count - 1);
+                        break;
+                    }
+                    result += data;  
                     break;
                 #endregion
 
@@ -175,12 +176,12 @@ namespace Kalc
                     signCollector.Add(sign);
                     //Removing the last element.
                     if (getNullData == null)
-                        {
-                            dataCollector.RemoveAt(dataCollector.Count - 1);
-                            break;
-                        }
-                        result -= data;
-                    
+                    {
+
+                        dataCollector.RemoveAt(dataCollector.Count - 1);
+                        break;
+                    }
+                    result -= data;
                     break;
                 #endregion
 
@@ -192,12 +193,11 @@ namespace Kalc
                     signCollector.Add(sign);
                     //Removing the last element.
                     if (getNullData == null)
-                        {
-                            dataCollector.RemoveAt(dataCollector.Count - 1);
-                            break;
-                        }
-                        result *= data;
-                    
+                    {
+                        dataCollector.RemoveAt(dataCollector.Count - 1);
+                        break;
+                    }
+                    result *= data;
                     break;
                 #endregion
 
@@ -209,12 +209,11 @@ namespace Kalc
                     signCollector.Add(sign);
                     //Removing the last element.
                     if (getNullData == null)
-                        {
-                            dataCollector.RemoveAt(dataCollector.Count - 1);
-                            break;
-                        }
-                        result /= data;
-                    
+                    {
+                        dataCollector.RemoveAt(dataCollector.Count - 1);
+                        break;
+                    }
+                    result /= data;
                     break;
                     #endregion
             }
